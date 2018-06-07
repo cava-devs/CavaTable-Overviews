@@ -86,17 +86,26 @@ nav ol.breadcrumb li.breadcrumb-item {
 
 .bodyContainer {
   position: relative;
-  bottom: 45px;
+  bottom: 51px;
 }
 
 .bodyNav {
-  padding: 10px;
   border-bottom: 1px solid #EBEBEB;
-  color: black;
+}
+
+.bodyNav ul.navbar-nav {
+  padding: 10px 10px 0px 10px;
 }
 
 .bodyNav li.nav-item {
   margin-right: 30px;
+  padding-bottom: 10px;
+}
+
+.bodyNavActive {
+  color: #CA4548;
+  border-bottom: solid 2px;
+  border-color: #CA4548;
 }
 
 .reservationContainer {

@@ -1,0 +1,113 @@
+#overview_module {
+  margin-bottom: 100px;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.overview-title {
+  font-weight: 700;
+  border-bottom: 1px solid #EBEBEB; 
+  padding: 25px 0px 25px 0px;
+}
+
+
+/* This is for the  ReviewsOverview component */
+.avgReviewContainer, .totalReviewsContainer, .priceRangeContainer, .cuisineTypeContainer {
+  margin-right: 3%;
+  display: inline-block;
+}
+
+.avgReview, .totalReviews, .priceRange, .cuisineType {
+  margin-left: 5px;
+  font-weight: 700;
+}
+
+
+/* This is for the TopTags component */
+#topTagsContainer {
+  margin-bottom: 30px;
+}
+
+.tagSectionHeader {
+  margin-bottom: 5px;
+}
+
+.tagScrollWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.80rem;
+  color: #6F737A;
+  font-weight: 700;
+  border: 1px solid #D8D9DB;
+  border-radius: 40px;
+  padding: 7px;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+
+/* This is for the Description component */
+#restaurantDescription {
+  margin-bottom: 30px;
+}
+
+.toggleDescription {
+  color: #CA4548;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.toggleDescription:hover {
+  color: #CA4548;
+  text-decoration: underline;
+}
+
+
+/* This is for the RestaurantInfo component */
+#restaurantInfo {
+  padding: 0px;
+  font-size: 0.85rem;
+}
+
+.infoSection {
+  margin-bottom: 10px;
+}
+
+.infoTitle {
+  font-weight: 700;
+  position: relative;
+  bottom: 4px;
+  margin-left: 8px;
+}
+
+.infoContent {
+  margin-left: 28px;
+  position: relative;
+  bottom: 4px;
+}
+
+
+
+
+.test {
+  background-color: blue;
+}
+
+.test2 {
+  background-color: red;
+}
+
+.infoIcon {
+
+}
