@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "faker": "^4.1.0",
     "file-loader": "^1.1.11",
     "font-awesome": "^4.7.0",
     "font-awesome-loader": "^1.0.2",

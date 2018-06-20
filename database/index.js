@@ -54,4 +54,6 @@ const retrieve = (restaurantId, handleResponse) => {
     .catch(err => handleResponse(err, null));
 };
 
-module.exports.retrieve = retrieve;
+module.exports = {
+  retrieve,
+}
