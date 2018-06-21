@@ -13,3 +13,6 @@ googleMaps.config.js
 
 ##vscode
 .vscode/
+
+##fakeData
+.txt

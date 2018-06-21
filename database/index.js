@@ -54,6 +54,8 @@ const retrieve = (restaurantId, handleResponse) => {
     .catch(err => handleResponse(err, null));
 };
 
+const addData = 
+
 module.exports = {
   retrieve,
 }
