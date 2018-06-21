@@ -20,4 +20,18 @@ app.get('/overviews/restaurant/:restaurantId/overview', (req, res) => {
   });
 });
 
+app.post('/overviews/restaurant/:restaurantId/add', (req,res) => {
+  res.send('response for post request')
+
+});
+
+app.put('/overviews/restaurant/:restaurantId/change', (req, res) => {
+  res.send('response for put request')
+});
+
+app.delete('/overviews/restaurant/:restaurantId/delete', (req, res) => {
+  res.send('response for delete request')
+
+});
+
 module.exports = app;
