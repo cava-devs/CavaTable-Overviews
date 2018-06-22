@@ -126,9 +126,9 @@ let paymentStr = '';
 let tagStr = '';
 
 const writeData = () => {
-  for (let k = 0; k < 10; k ++) {
-    for (let i = 0; i < 100000; i ++) {
-      id = (100000 * k) + i;
+  for (let k = 0; k < 1000; k ++) {
+    for (let i = 0; i < 10000; i ++) {
+      id = (10000 * k) + i + 1;
       restaurantName = faker.lorem.words();
       description = faker.lorem.sentence();
       diningStyle = diningOptionArray[randomNumber(1, diningOptionArray.length)];
@@ -156,12 +156,21 @@ const writeData = () => {
         tagStr += `${id}|${tagOption[tag[l]]}|${randomNumber(0, 50)}\n`
       }          
     }
-    fs.appendFileSync('restaurant.txt', string);
-    string = '';
-    fs.appendFileSync('paymentPerRestaurant.txt', paymentStr);
-    paymentStr = '';
-    fs.appendFileSync('tagPerRestaurant.txt', tagStr);
-    tagStr = '';
+    if(k < 500) {
+      fs.appendFileSync('restaurant1.txt', string);
+      string = '';
+      fs.appendFileSync('paymentPerRestaurant1.txt', paymentStr);
+      paymentStr = '';
+      fs.appendFileSync('tagPerRestaurant1.txt', tagStr);
+      tagStr = '';
+    } else {
+      fs.appendFileSync('restaurant2.txt', string);
+      string = '';
+      fs.appendFileSync('paymentPerRestaurant2.txt', paymentStr);
+      paymentStr = '';
+      fs.appendFileSync('tagPerRestaurant2.txt', tagStr);
+      tagStr = '';
+    }
   }
 };
 
@@ -172,7 +181,3 @@ console.log('table is done?');
 // writeData();
 // console.timeEnd('10M-elements');
 // console.log('making data is done?');
-
-
-
-

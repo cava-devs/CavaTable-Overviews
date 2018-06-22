@@ -10,7 +10,10 @@
   "scripts": {
     "start": "node server/index.js",
     "build": "webpack -d --watch",
-    "test": "jest"
+    "test": "jest",
+    "seeding": "npm run seeding1 && npm run seeding2",
+    "seeding1": "psql restaurant < seeding.sql & psql restaurant < seeding2.sql",
+    "seeding2": "psql restaurant < seeding3.sql & psql restaurant < seeding4.sql & psql restaurant < seeding5.sql & psql restaurant < seeding6.sql"
   },
   "dependencies": {
     "autoprefixer": "^8.6.0",
