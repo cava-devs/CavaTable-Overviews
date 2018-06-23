@@ -2,9 +2,8 @@ const faker = require('faker');
 const pgp = require('pg-promise')();
 const Promise = require('bluebird');
 const fs = require('fs');
-// const cd = require('./cassandra.js');
-
-// cd.testFuc(); 
+const cassandra = require('cassandra-driver');
+const client = new cassandra.Client({ contactPoints: ['localhost'] })
 
 const db = pgp(process.env.DATABASE_URL || 'postgres://localhost:5432/restaurant');
 
@@ -82,11 +81,9 @@ const randomNumber = (min, max) => {
 };
 
 const makeTable = () => {
-  //diningTable
   for (let a = 0; a < diningOptionArray.length; a++) {
     db.none(`INSERT INTO dining_style VALUES ('${a + 1}', '${diningOptionArray[a]}')`).catch((err) => console.log(err))
   }
-
   for (let b = 0; b < cuisineOptionArray.length; b++) {
     db.none(`INSERT INTO cuisine VALUES ('${b + 1}', '${cuisineOptionArray[b]}')`);
   }
@@ -130,10 +127,6 @@ let voteNumber = 0;
 let noSqlStr = '';
 let noSqlTag = {};
 
-// const file = fs.createWriteStream('./cassandra.txt', {flags: 'a'});
-
-const cassandra = require('cassandra-driver');
-let client = new cassandra.Client({ contactPoints: ['localhost'] })
 
 // let createFK = `CREATE KEYSPACE IF NOT EXISTS abletableKey WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor' : 3}`
 
@@ -180,11 +173,15 @@ let client = new cassandra.Client({ contactPoints: ['localhost'] })
 // });
 
 let insert = '';
+let rows = [];
 
-const writeData = () => {
-  for (let k = 0; k < 1; k ++) {
-    for (let i = 0; i < 1; i ++) {
-      id = (10 * k) + i + 1;
+const writeData = (num) => {
+  let batches = [];
+
+  for (let k = 0; k < 100; k ++) {
+    rows = [];
+    for (let i = 0; i < 10; i ++) {
+      id = ((10 * k) + i + 1) + (1000 * num);
       restaurantName = faker.lorem.words();
       description = faker.lorem.sentence();
       diningStyle = diningOptionArray[randomNumber(1, diningOptionArray.length)];
@@ -215,28 +212,12 @@ const writeData = () => {
         noSqlTag[tag[l]] = voteNumber;
       }          
       // noSqlStr = `${id},'${restaurantName}','${description}','${diningStyle}','${cuisine}','${breakfastTime}','${lunchTime}','${dinnerTime}','${phoneNumber}','${website}','${dressCode}','${chef}',${lat},${lng},'${address}','${neighborhood}','${crossStreet}','${parking}','${publicTransit}',[${payment}],${JSON.stringify(noSqlTag)}\n`;
-      insert = `INSERT INTO abletableKey.restaurants JSON '{"id":${id},"name": "${restaurantName}","description": "${description}","dining_style": "${diningStyle}","cuisine": "${cuisine}","breakfast_hours": "${breakfastTime}","lunch_hours": "${lunchTime}","dinner_hours": "${dinnerTime}","phone_number": "${phoneNumber}","website": "${website}","dress_code": "${dressCode}","chef": "${chef}","lat": ${lat},"lng": ${lng},"adress": "${address}","neighborhood": "${neighborhood}","croess_street": "${crossStreet}","parking": "${parking}","public_transit": "${publicTransit}","payment": ${JSON.stringify(payment)},"tag": ${JSON.stringify(noSqlTag)}}'`
+      insert = `{"id":${id},"name": "${restaurantName}","description": "${description}","dining_style": "${diningStyle}","cuisine": "${cuisine}","breakfast_hours": "${breakfastTime}","lunch_hours": "${lunchTime}","dinner_hours": "${dinnerTime}","phone_number": "${phoneNumber}","website": "${website}","dress_code": "${dressCode}","chef": "${chef}","lat": ${lat},"lng": ${lng},"adress": "${address}","neighborhood": "${neighborhood}","croess_street": "${crossStreet}","parking": "${parking}","public_transit": "${publicTransit}","payment": ${JSON.stringify(payment)},"tag": ${JSON.stringify(noSqlTag)}}\n`
 
-      rows = [{query: `INSERT INTO abletableKey.restaurants JSON ?`, params: [`{"id":200000,"name": "${restaurantName}","description": "${description}","dining_style": "${diningStyle}","cuisine": "${cuisine}","breakfast_hours": "${breakfastTime}","lunch_hours": "${lunchTime}","dinner_hours": "${dinnerTime}","phone_number": "${phoneNumber}","website": "${website}","dress_code": "${dressCode}","chef": "${chef}","lat": ${lat},"lng": ${lng},"adress": "${address}","neighborhood": "${neighborhood}","croess_street": "${crossStreet}","parking": "${parking}","public_transit": "${publicTransit}","payment": ${JSON.stringify(payment)},"tag": ${JSON.stringify(noSqlTag)}}`]}]
-
-      client.batch(rows, {prepare: true});
-
-      // console.log(JSON.stringify(payment));
-      // client.execute(insert, (err, result) => {
-      //   if(err) {
-      //     console.log(err, 'error during inserting data')
-      //   } else {
-      //     console.log('check the table');
-      //   }
-      // });
-
+      rows[i] = {query: `INSERT INTO abletableKey.restaurants JSON ?`, params: [insert]}
 
     }
-    // fs.appendFileSync('cassandra.txt', noSqlStr);
-
-    // file.write(noSqlStr);
-
-
+    batches.push(client.batch(rows, {prepare: true}));
 
     // console.log(noSqlTag);
     // if (k < 500) {
@@ -255,13 +236,15 @@ const writeData = () => {
     //   tagStr = '';
     // }
   }
-  // file.end();
+
+  Promise.all(batches).then(() => num < (10000 - 1) ? writeData(num+1) : client.shutdown());
+  
 };
 
 // makeTable();
-// console.log('table is done?');
+// console.log('table is done');
 
-console.time('1M-elements');
-writeData();
-console.timeEnd('1M-elements');
-// console.log('making data is done?');
+// console.time('1M-elements');
+writeData(0);
+// console.timeEnd('1M-elements');
+
