@@ -35,10 +35,25 @@ const overviewSchema = new mongoose.Schema({
 
 const OverviewModel = mongoose.model('overviews', overviewSchema);
 
+OverviewModel.count((err, count) => {
+  if (err) {
+    console.log(err, 'error during counting mock data');
+  }
+  if (!count) {
+    OverviewModel.insertMany(data, (err) => {
+      if (err) {
+        console.log(err, 'error during building mock data');
+      }
+    });
+  }
+});
+
 const retrieve = (restaurantId, handleResponse) => {
   OverviewModel.find({ rest_id: parseInt(restaurantId, 10) })
     .then(results => handleResponse(null, results))
     .catch(err => handleResponse(err, null));
 };
 
-module.exports.retrieve = retrieve;
+module.exports = {
+  retrieve,
+}

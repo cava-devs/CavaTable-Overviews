@@ -1,3 +1,18 @@
+
+## Mac OS
+.DS_store
+
+##npm packages
 node_modules/
-googleMaps.config.js
+
+##webpack output bundle
 public/dist/bundle.js
+
+##config
+googleMaps.config.js
+
+##vscode
+.vscode/
+
+##fakeData
+*.txt
