@@ -178,9 +178,9 @@ let rows = [];
 const writeData = (num) => {
   let batches = [];
 
-  for (let k = 0; k < 100; k ++) {
+  for (let k = 0; k < 1; k ++) {
     rows = [];
-    for (let i = 0; i < 10; i ++) {
+    for (let i = 0; i < 1; i ++) {
       id = ((10 * k) + i + 1) + (1000 * num);
       restaurantName = faker.lorem.words();
       description = faker.lorem.sentence();
@@ -201,7 +201,9 @@ const writeData = (num) => {
       tag = tagOptionArray.slice(-(randomNumber(0, tagOptionArray.length)));
 
       
-      // string += `${id}|${restaurantName}|${description}|${diningOption[diningStyle]}|${cuisineOption[cuisine]}|${breakfastTime}|${lunchTime}|${dinnerTime}|${phoneNumber}|${website}|${dressCodeOption[dressCode]}|${chef}|${lat}|${lng}|${address}|${neighborhood}|${crossStreet}|${parking}|${publicTransit}\n`;
+      string += `${id}|${restaurantName}|${description}|${diningOption[diningStyle]}|${cuisineOption[cuisine]}|${breakfastTime}|${lunchTime}|${dinnerTime}|${phoneNumber}|${website}|${dressCodeOption[dressCode]}|${chef}|${lat}|${lng}|${address}|${neighborhood}|${crossStreet}|${parking}|${publicTransit}\n`;
+
+      console.log(string);
       
       // for (let j = 0; j < payment.length; j ++) {
       //   paymentStr += `${id}|${paymentOption[payment[j]]}\n`;
@@ -214,10 +216,10 @@ const writeData = (num) => {
       // noSqlStr = `${id},'${restaurantName}','${description}','${diningStyle}','${cuisine}','${breakfastTime}','${lunchTime}','${dinnerTime}','${phoneNumber}','${website}','${dressCode}','${chef}',${lat},${lng},'${address}','${neighborhood}','${crossStreet}','${parking}','${publicTransit}',[${payment}],${JSON.stringify(noSqlTag)}\n`;
       insert = `{"id":${id},"name": "${restaurantName}","description": "${description}","dining_style": "${diningStyle}","cuisine": "${cuisine}","breakfast_hours": "${breakfastTime}","lunch_hours": "${lunchTime}","dinner_hours": "${dinnerTime}","phone_number": "${phoneNumber}","website": "${website}","dress_code": "${dressCode}","chef": "${chef}","lat": ${lat},"lng": ${lng},"adress": "${address}","neighborhood": "${neighborhood}","croess_street": "${crossStreet}","parking": "${parking}","public_transit": "${publicTransit}","payment": ${JSON.stringify(payment)},"tag": ${JSON.stringify(noSqlTag)}}\n`
 
-      rows[i] = {query: `INSERT INTO abletableKey.restaurants JSON ?`, params: [insert]}
+      // rows[i] = {query: `INSERT INTO abletableKey.restaurants JSON ?`, params: [insert]}
 
     }
-    batches.push(client.batch(rows, {prepare: true}));
+    // batches.push(client.batch(rows, {prepare: true}));
 
     // console.log(noSqlTag);
     // if (k < 500) {
@@ -236,8 +238,7 @@ const writeData = (num) => {
     //   tagStr = '';
     // }
   }
-
-  Promise.all(batches).then(() => num < (10000 - 1) ? writeData(num+1) : client.shutdown());
+  // Promise.all(batches).then(() => num < (10000 - 1) ? writeData(num+1) : client.shutdown());
   
 };
 
